@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users API</title>
+    <style>
+        .users{
+            color:royalblue;
+        }
+        button{
+            border: 1px solid royalblue;
+            border-radius: 10px;
+            padding:5px;
+            background-color: purple;
+            color: whitesmoke;
+            margin-left: 15px;
+        }
+        button:hover{
+            background-color: black;
+        }
+    </style>
+</head>
+<body>
+    <div id="users-name">
+    </div>
+    <div id="user-detail">
+
+    </div>
+    <script>
+        fetch(`https://jsonplaceholder.typicode.com/users`)
+        .then(response=>response.json())
+        .then(data=>{
+            const usersContainer = document.getElementById("users-name");
+        for (let i = 0; i < data.length; i++) {
+            const users = data[i];
+            const createDiv = document.createElement("div");
+            createDiv.innerHTML = `
+            <p class="users"> Name:
+            <strong>${users.name}</strong>
+            <button onclick = "getUserDetail(${users.id})">Get Details ${users.id}</button>
+            </p>`;
+            usersContainer.appendChild(createDiv);
+        }
+        });
+
+        function getUserDetail(userId){
+            fetch(`https://jsonplaceholder.typicode.com/users/${userId}`)
+            .then(response=>response.json())
+            .then(data=>{
+                const detail = document.getElementById("user-detail");
+                detail.innerHTML = `
+                <h1>${data.name}</h1>
+                <h3>${data.email}</h1>
+                <h4>${data.phone}</h1>
+                `
+            }) 
+        }
+    </script>
+</body>
+</html>
